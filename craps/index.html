@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Throwing 1 die</title>
+</head>
+<body onload="init();">
+	<canvas id="canvas" width="400" height="300">
+		Your browser doesn't support the H5 element canvas
+	</canvas>
+
+
+
+
+	<script type="text/javascript">
+		let ctx;
+		ctx = document.getElementById("canvas").getContext('2d');
+		let cwidth = 400;  //画布宽
+		let cheight = 300; //画布高
+		let dicex = 50; 	//骰子圆心x
+		let dicey = 50;		//骰子圆心y
+		let dicewidth = 100;  //骰子面宽
+		let diceheight = 100;	//骰子面高
+		let dotrad = 6;	//点数半径
+		function init() {
+			let ch = 1 + Math.floor(Math.random()*6);	//随机1-6，得到骰子点数
+			drawface(ch);
+		}
+		function drawface(n) {
+			
+			ctx.lineWidth = 5;
+			ctx.clearRect(dicex,dicey,dicewidth,diceheight); //清楚原来绘制面的空间
+			ctx.strokeRect(dicex,dicey,dicewidth,diceheight); //绘制骰子面的轮廓
+			ctx.fillStyle = '#096'; //设置圆的填充颜色
+
+			switch(n) {
+				case 1:
+					Draw1();
+					break;
+				case 2: 
+					Draw2();
+					break;
+				case 3:
+					Draw2();
+					Draw1();
+					break;
+				case 4:
+					Draw4();
+					break;
+				case 5: 
+					Draw4();
+					Draw1();
+					break;
+				case 6:
+					Draw4();
+					Draw2mid();
+					break;
+			}
+
+		}
+		function Draw1() {
+			let dotx;  //圆点的水平位置
+			let doty;	//圆点的垂直位置
+			ctx.beginPath();
+
+			dotx = dicex + 0.5*dicewidth; //圆心位置位于骰子的中心
+			doty = dicey + 0.5*diceheight;
+
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true); // 构造一个圆
+			ctx.closePath(); //结束路径
+			ctx.fill();		//填充这个圆
+
+		}
+		function Draw2() {
+			let dotx;
+			let doty;
+			ctx.beginPath();
+
+			dotx = dicex + 3*dotrad;	//设置这个圆圆心与骰子左上角相差三个半径
+			doty = dicey + 3*dotrad;
+
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			dotx = dicex + dicewidth - 3*dotrad;	//设置这个圆圆心与骰子右下角相差三个半径
+			doty = dicey + diceheight - 3*dotrad;
+
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+			ctx.closePath();
+			ctx.fill();
+		}
+		function Draw4() {
+			let dotx;
+			let doty;
+			ctx.beginPath();
+
+			dotx = dicex + 3*dotrad;		//设置这个圆圆心与骰子左上角相差三个半径
+			doty = dicey + 3*dotrad;
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			dotx = dicex + dicewidth - 3*dotrad;		//设置这个圆圆心与骰子右下角相差三个半径
+			doty = dicey + diceheight - 3*dotrad;
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			ctx.closePath();
+			ctx.fill();
+
+			ctx.beginPath();
+			dotx = dicex + 3*dotrad;		//设置这个圆圆心与骰子左下角相差三个半径
+			doty = dicey + diceheight - 3*dotrad;
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			dotx = dicex + dicewidth - 3*dotrad;		//设置这个圆圆心与骰子右上角相差三个半径
+			doty = dicey + 3*dotrad;
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			ctx.closePath();
+			ctx.fill();
+		}
+
+		function Draw2mid() {
+			let dotx;
+			let doty;
+			ctx.beginPath();
+
+			dotx = dicex + 3 * dotrad;
+			doty = dicey + .5*diceheight;
+
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			dotx = dicex + dicewidth - 3 * dotrad;
+			doty = dicey + .5*diceheight;
+
+			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+
+			ctx.closePath();
+			ctx.fill();
+		}
+		
+		
+	</script>
+</body>
+</html>
