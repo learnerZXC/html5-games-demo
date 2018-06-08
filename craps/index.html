@@ -3,13 +3,13 @@
 <head>
 	<title>Throwing 1 die</title>
 </head>
-<body onload="init();">
+<body>
 	<canvas id="canvas" width="400" height="300">
 		Your browser doesn't support the H5 element canvas
 	</canvas>
-
-
-
+	<br/>
+	<button onClick="throwdice()">Throwdice</button>
+	
 
 	<script type="text/javascript">
 		let ctx;
@@ -21,16 +21,28 @@
 		let dicewidth = 100;  //骰子面宽
 		let diceheight = 100;	//骰子面高
 		let dotrad = 6;	//点数半径
-		function init() {
-			let ch = 1 + Math.floor(Math.random()*6);	//随机1-6，得到骰子点数
+		let dx;	//定义骰子的水平位置，两个骰子的水平位置不同
+		let dy;	//定义骰子的垂直位置，两个骰子的垂直位置相同
+
+		function throwdice() {
+			let ch = 1 + Math.floor(Math.random()*6); //获取随机数，第一个骰子面的点数
+			dx = dicex;		//设置第一个骰子面的dx;
+			dy = dicey;		//设置两个骰子的dy;
 			drawface(ch);
-		}
+			dx= dicex + 150; //设置第二个骰子面的dx;
+			ch = 1 + Math.floor(Math.random()*6); //获取随机数，第二个骰子面的点数
+			drawface(ch);
+		}	
+		
 		function drawface(n) {
 			
 			ctx.lineWidth = 5;
-			ctx.clearRect(dicex,dicey,dicewidth,diceheight); //清楚原来绘制面的空间
-			ctx.strokeRect(dicex,dicey,dicewidth,diceheight); //绘制骰子面的轮廓
+			ctx.clearRect(dx,dy,dicewidth,diceheight); //清楚原来绘制面的空间
+			ctx.strokeRect(dx,dy,dicewidth,diceheight); //绘制骰子面的轮廓
 			ctx.fillStyle = '#096'; //设置圆的填充颜色
+
+			let dotx;	//圆点的水平位置
+			let doty;	//圆点的垂直位置
 
 			switch(n) {
 				case 1:
@@ -62,8 +74,8 @@
 			let doty;	//圆点的垂直位置
 			ctx.beginPath();
 
-			dotx = dicex + 0.5*dicewidth; //圆心位置位于骰子的中心
-			doty = dicey + 0.5*diceheight;
+			dotx = dx + 0.5*dicewidth; //圆心位置位于骰子的中心
+			doty = dy + 0.5*diceheight;
 
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true); // 构造一个圆
 			ctx.closePath(); //结束路径
@@ -75,13 +87,13 @@
 			let doty;
 			ctx.beginPath();
 
-			dotx = dicex + 3*dotrad;	//设置这个圆圆心与骰子左上角相差三个半径
-			doty = dicey + 3*dotrad;
+			dotx = dx + 3*dotrad;	//设置这个圆圆心与骰子左上角相差三个半径
+			doty = dy + 3*dotrad;
 
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
-			dotx = dicex + dicewidth - 3*dotrad;	//设置这个圆圆心与骰子右下角相差三个半径
-			doty = dicey + diceheight - 3*dotrad;
+			dotx = dx + dicewidth - 3*dotrad;	//设置这个圆圆心与骰子右下角相差三个半径
+			doty = dy + diceheight - 3*dotrad;
 
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 			ctx.closePath();
@@ -92,24 +104,24 @@
 			let doty;
 			ctx.beginPath();
 
-			dotx = dicex + 3*dotrad;		//设置这个圆圆心与骰子左上角相差三个半径
-			doty = dicey + 3*dotrad;
+			dotx = dx + 3*dotrad;		//设置这个圆圆心与骰子左上角相差三个半径
+			doty = dy + 3*dotrad;
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
-			dotx = dicex + dicewidth - 3*dotrad;		//设置这个圆圆心与骰子右下角相差三个半径
-			doty = dicey + diceheight - 3*dotrad;
+			dotx = dx + dicewidth - 3*dotrad;		//设置这个圆圆心与骰子右下角相差三个半径
+			doty = dy + diceheight - 3*dotrad;
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
 			ctx.closePath();
 			ctx.fill();
 
 			ctx.beginPath();
-			dotx = dicex + 3*dotrad;		//设置这个圆圆心与骰子左下角相差三个半径
-			doty = dicey + diceheight - 3*dotrad;
+			dotx = dx + 3*dotrad;		//设置这个圆圆心与骰子左下角相差三个半径
+			doty = dy + diceheight - 3*dotrad;
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
-			dotx = dicex + dicewidth - 3*dotrad;		//设置这个圆圆心与骰子右上角相差三个半径
-			doty = dicey + 3*dotrad;
+			dotx = dx + dicewidth - 3*dotrad;		//设置这个圆圆心与骰子右上角相差三个半径
+			doty = dy + 3*dotrad;
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
 			ctx.closePath();
@@ -121,8 +133,8 @@
 			let doty;
 			ctx.beginPath();
 
-			dotx = dicex + 3 * dotrad;
-			doty = dicey + .5*diceheight;
+			dotx = dx + 3 * dotrad;
+			doty = dy + .5*diceheight;
 
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
