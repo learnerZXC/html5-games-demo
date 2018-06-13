@@ -9,6 +9,11 @@
 	</canvas>
 	<br/>
 	<button onClick="throwdice()">Throwdice</button>
+	<form name="f">
+		Stage: <input name="stage" value = "First Throw"></input>
+		Point: <input name="pv" value = ""></input>
+		Outcome: <input name="outcome" value = ""></input>
+	</form>	
 	
 
 	<script type="text/javascript">
@@ -23,15 +28,57 @@
 		let dotrad = 6;	//点数半径
 		let dx;	//定义骰子的水平位置，两个骰子的水平位置不同
 		let dy;	//定义骰子的垂直位置，两个骰子的垂直位置相同
+		let firstturn = true; //全局变量，初始化为true
+		let point;	//全局变量，不需要初始化，因为在使用前会得到设置
 
 		function throwdice() {
+			let sum;	//保存两个骰子点数之和的变量
 			let ch = 1 + Math.floor(Math.random()*6); //获取随机数，第一个骰子面的点数
+			sum = ch;	//将第一个骰子数赋值给sum
 			dx = dicex;		//设置第一个骰子面的dx;
 			dy = dicey;		//设置两个骰子的dy;
 			drawface(ch);
 			dx= dicex + 150; //设置第二个骰子面的dx;
 			ch = 1 + Math.floor(Math.random()*6); //获取随机数，第二个骰子面的点数
+			sum += ch;		//将第二个骰子数加到sum上
 			drawface(ch);
+
+			if(firstturn){		//实现规则，判断是否为第一次投骰子
+				switch(sum) {
+					case 7: 
+					case 11: 
+						document.f.outcome.value = "You win!";	//点数为7,11，显示You win！
+						break;
+					case 2:
+					case 3: 
+					case 12: 	
+						document.f.outcome.value = "You lose!";		//点数为2,312 显示You lose！
+						break;		
+					default: 
+						point = sum;	//对于其他值，将变量保存在 point 中
+						document.f.pv.value = point;	
+						firstturn = false;		//设置firstturn为false;
+						document.f.stage.value = "Need follow-up throw.";
+						document.f.outcome.value = " "; 
+				}
+
+			} else {	//第一次投骰子没有结束，投了两次
+				switch(sum) {
+					case point: 
+						document.f.outcome.value = "You win!";
+						document.f.stage.value = "Back to first throw."
+						document.f.pv.value = " ";		//清除点数值
+						firstturn = true;	//重置firstturn;
+						break;
+
+					case 7: 
+						document.f.outcome.value = "You lose!";
+						document.f.stage.value = "Back to first throw."
+						document.f.pv.value = " ";		//清除点数值
+						firstturn = true;	//重置firstturn;
+				}
+			}
+
 		}	
 		
 		function drawface(n) {
@@ -138,8 +185,8 @@
 
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
-			dotx = dicex + dicewidth - 3 * dotrad;
-			doty = dicey + .5*diceheight;
+			dotx = dx + dicewidth - 3 * dotrad;
+			doty = dy + .5*diceheight;
 
 			ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
 
