@@ -13,6 +13,7 @@
 		Stage: <input name="stage" value = "First Throw"></input>
 		Point: <input name="pv" value = ""></input>
 		Outcome: <input name="outcome" value = ""></input>
+		Bank roll: <input name="bank" value="100"></input>
 	</form>	
 	
 
@@ -43,11 +44,22 @@
 			sum += ch;		//将第二个骰子数加到sum上
 			drawface(ch);
 
+			let bank = Number(document.f.bank.value); //将一个新变量设置为bank输入域中值所表示的数
+			if(bank < 10) {		//金币小于10，则无法继续
+				alert("您的余额不足，请充值！");
+				return;
+			}
+			bank = bank - 10;	//输一次金币减10
+			document.f.bank.value = String(bank);
+
 			if(firstturn){		//实现规则，判断是否为第一次投骰子
 				switch(sum) {
 					case 7: 
 					case 11: 
 						document.f.outcome.value = "You win!";	//点数为7,11，显示You win！
+						bank = Number(document.f.bank.value);
+						bank += 20;
+						document.f.bank.value = String(bank);
 						break;
 					case 2:
 					case 3: 
@@ -68,6 +80,8 @@
 						document.f.outcome.value = "You win!";
 						document.f.stage.value = "Back to first throw."
 						document.f.pv.value = " ";		//清除点数值
+						bank = Number(document.f.bank.value);
+						bank += 20;
 						firstturn = true;	//重置firstturn;
 						break;
 
